@@ -1,0 +1,7 @@
+{
+  "/back": {
+    "target": "http://back:3000",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
