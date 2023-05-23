@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { from, Observable, of } from 'rxjs';
 import { CreateUserDto } from '../model/dto/create-user.dto';
 import { UserI } from '../model/user.interface';
@@ -7,6 +7,8 @@ import { UserService } from '../services/user-service/user.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { LoginUserDto } from '../model/dto/login-user.dto';
+import { LoginResponseI } from '../model/login-response.interface';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
 
 @Controller('users')
 export class UserController {
@@ -14,8 +16,8 @@ export class UserController {
     private userService: UserService,
     private userHelperService: UserHelperService,
   ) {
-    // const foo$ = from([1, 2, 3, 4, 6]).pipe(map((item) => item * 10));
-    // foo$.subscribe((item) => console.log(item));
+    const foo$ = from([1, 2, 3, 4, 6]).pipe(map((item) => item * 10));
+    foo$.subscribe((item) => console.log(item));
   }
 
   @Post()
@@ -25,6 +27,7 @@ export class UserController {
       .pipe(switchMap((user: UserI) => this.userService.create(user)));
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(
     @Query('page') page = 1,
@@ -39,9 +42,19 @@ export class UserController {
   }
 
   @Post('login')
-  login(@Body() loginUserDto: LoginUserDto): Observable<boolean> {
-    return this.userHelperService
-      .loginUserDtoToEntity(loginUserDto)
-      .pipe(switchMap((user: UserI) => this.userService.login(user)));
+  login(@Body() loginUserDto: LoginUserDto): Observable<LoginResponseI> {
+    return this.userHelperService.loginUserDtoToEntity(loginUserDto).pipe(
+      switchMap((user: UserI) =>
+        this.userService.login(user).pipe(
+          map((jwt: string) => {
+            return {
+              access_token: jwt,
+              token_type: 'JWT',
+              expires_in: 60,
+            };
+          }),
+        ),
+      ),
+    );
   }
 }
