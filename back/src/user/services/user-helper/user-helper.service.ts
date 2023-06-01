@@ -9,8 +9,8 @@ export class UserHelperService {
   createUserDtoToEntity(createUserDto: CreateUserDto): Observable<UserI> {
     return of({
       email: createUserDto.email,
-      username: createUserDto.username,
       password: createUserDto.password,
+      username: createUserDto.username,
     });
   }
 

@@ -16,15 +16,8 @@ export class UserController {
     private userService: UserService,
     private userHelperService: UserHelperService,
   ) {
-    const foo$ = from([1, 2, 3, 4, 6]).pipe(map((item) => item * 10));
-    foo$.subscribe((item) => console.log(item));
-  }
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto): Observable<UserI> {
-    return this.userHelperService
-      .createUserDtoToEntity(createUserDto)
-      .pipe(switchMap((user: UserI) => this.userService.create(user)));
+    // const foo$ = from([1, 2, 3, 4, 6]).pipe(map((item) => item * 10));
+    // foo$.subscribe((item) => console.log(item));
   }
 
   @UseGuards(JwtAuthGuard)
@@ -39,6 +32,13 @@ export class UserController {
       limit,
       route: 'http://localhost:3000/back/users',
     });
+  }
+
+  @Post()
+  create(@Body() createUserDto: CreateUserDto): Observable<UserI> {
+    return this.userHelperService
+      .createUserDtoToEntity(createUserDto)
+      .pipe(switchMap((user: UserI) => this.userService.create(user)));
   }
 
   @Post('login')
