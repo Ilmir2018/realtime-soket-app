@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
-import { from, Observable, of } from 'rxjs';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Observable } from 'rxjs';
 import { CreateUserDto } from '../model/dto/create-user.dto';
 import { UserI } from '../model/user.interface';
 import { UserHelperService } from '../services/user-helper/user-helper.service';
@@ -8,19 +8,14 @@ import { map, switchMap } from 'rxjs/operators';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { LoginUserDto } from '../model/dto/login-user.dto';
 import { LoginResponseI } from '../model/login-response.interface';
-import { JwtAuthGuard } from 'src/auth/jwt.guard';
 
 @Controller('users')
 export class UserController {
   constructor(
     private userService: UserService,
     private userHelperService: UserHelperService,
-  ) {
-    // const foo$ = from([1, 2, 3, 4, 6]).pipe(map((item) => item * 10));
-    // foo$.subscribe((item) => console.log(item));
-  }
+  ) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(
     @Query('page') page = 1,

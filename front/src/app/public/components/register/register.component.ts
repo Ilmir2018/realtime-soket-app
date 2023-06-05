@@ -56,17 +56,5 @@ export class RegisterComponent {
     }
   }
 
-  testPromise() {
-    let promise = new Promise(function (resolve, reject) {
-      // спустя одну секунду будет сообщено, что задача выполнена с ошибкой
-      setTimeout(() => reject(new Error('Whoops!')), 1000);
-    });
-    promise
-      .then((answer) => {
-        console.log(answer);
-      })
-      .finally(() => {
-        console.log('wefewfwef');
-      });
-  }
+  testPromise() {}
 }

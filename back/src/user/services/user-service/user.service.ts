@@ -99,6 +99,10 @@ export class UserService {
     return this.authService.hashPassword(password);
   }
 
+  public getOne(id: any): Promise<UserI> {
+    return this.userRepository.findOneOrFail({ where: { id } });
+  }
+
   private mailExists(email: string): Observable<boolean> {
     return from(
       this.userRepository.findOne({
