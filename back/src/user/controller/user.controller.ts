@@ -50,7 +50,7 @@ export class UserController {
             return {
               access_token: jwt,
               token_type: 'JWT',
-              expires_in: 60,
+              expires_in: 3600,
             };
           }),
         ),
