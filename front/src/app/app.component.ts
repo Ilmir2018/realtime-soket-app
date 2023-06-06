@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { min, Observable } from 'rxjs';
 import * as _ from 'lodash';
+import { reject } from 'lodash';
 
 @Component({
   selector: 'app-root',

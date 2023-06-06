@@ -3,5 +3,10 @@
     "target": "http://back:3000",
     "secure": false,
     "changeOrigin": true
+  },
+  "/socket.io/": {
+    "target": "http://back:3000",
+    "secure": false,
+    "changeOrigin": true
   }
 }
