@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../../services/chat-service/chat.service';
 
 @Component({
@@ -6,8 +6,12 @@ import { ChatService } from '../../services/chat-service/chat.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less'],
 })
-export class DashboardComponent {
-  title = this.chatService.getMessage();
+export class DashboardComponent implements OnInit {
+  rooms$ = this.chatService.getMyRooms();
 
   constructor(private chatService: ChatService) {}
+
+  ngOnInit(): void {
+    this.chatService.createRoom();
+  }
 }

@@ -4,9 +4,12 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   WebSocketServer,
+  SubscribeMessage,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/service/auth.service';
+import { RoomI } from 'src/chat/models/room.interface';
+import { RoomService } from 'src/chat/service/room-service/room/room.service';
 import { UserI } from 'src/user/model/user.interface';
 import { UserService } from 'src/user/services/user-service/user.service';
 
@@ -19,12 +22,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private roomService: RoomService,
   ) {}
 
   @WebSocketServer()
   server: Server;
-
-  title: string[] = [];
 
   async handleConnection(socket: Socket) {
     try {
@@ -35,8 +37,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (!user) {
         return this.disconnect(socket);
       } else {
-        this.title.push('Value ' + Math.random().toString());
-        this.server.emit('message', this.title);
+        socket.data.user = user;
+        const rooms = await this.roomService.getRoomsForUser(user.id, {
+          page: 1,
+          limit: 10,
+        });
+        return this.server.to(socket.id).emit('rooms', rooms);
       }
     } catch {
       return this.disconnect(socket);
@@ -50,5 +56,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleDisconnect(socket: Socket) {
     socket.disconnect();
+  }
+
+  @SubscribeMessage('createRoom')
+  async onCreateRoom(soket: Socket, room: RoomI): Promise<RoomI> {
+    return this.roomService.createRoom(room, soket.data.user);
   }
 }
