@@ -8,6 +8,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/service/auth.service';
+import { PageI } from 'src/chat/models/page.interface';
 import { RoomI } from 'src/chat/models/room.interface';
 import { RoomService } from 'src/chat/service/room-service/room/room.service';
 import { UserI } from 'src/user/model/user.interface';
@@ -42,6 +43,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           page: 1,
           limit: 10,
         });
+
+        //this is for angualr-material paginator
+        rooms.meta.currentPage = rooms.meta.currentPage - 1;
         return this.server.to(socket.id).emit('rooms', rooms);
       }
     } catch {
@@ -61,5 +65,19 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('createRoom')
   async onCreateRoom(soket: Socket, room: RoomI): Promise<RoomI> {
     return this.roomService.createRoom(room, soket.data.user);
+  }
+
+  @SubscribeMessage('paginateRooms')
+  async onPaginateRoom(socket: Socket, page: PageI) {
+    page.limit = page.limit > 100 ? 100 : page.limit;
+    //this is for angualr-material paginator
+    page.page = page.page + 1;
+    const rooms = await this.roomService.getRoomsForUser(
+      socket.data.user.id,
+      page,
+    );
+    //this is for angualr-material paginator
+    rooms.meta.currentPage = rooms.meta.currentPage - 1;
+    return this.server.to(socket.id).emit('rooms', rooms);
   }
 }

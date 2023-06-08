@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
-import { map } from 'rxjs';
 import { RoomI, RoomPaginateI } from 'src/app/models/room.interface';
 import { UserI } from 'src/app/models/user.interface';
 import { CustomSocket } from '../../sokets/custom-socket';
@@ -22,16 +20,9 @@ export class ChatService {
     return this.socket.fromEvent<RoomPaginateI>('rooms');
   }
 
-  createRoom() {
-    const user: UserI = {
-      id: 1,
-    };
-
-    const room: RoomI = {
-      name: 'TestRoom',
-      users: [user],
-    };
-
-    this.socket.emit('createRoom', room);
+  emitPaginateRooms(limit: number, page: number) {
+    this.socket.emit('paginateRooms', { limit, page });
   }
+
+  createRoom() {}
 }
