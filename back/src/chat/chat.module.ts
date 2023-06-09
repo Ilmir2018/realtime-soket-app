@@ -3,12 +3,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
 import { ChatGateway } from './gateway/chat/chat.gateway';
+import { ConnectedUserEntity } from './models/connected-user.entity';
 import { RoomEntity } from './models/room.entity';
-import { RoomService } from './service/room-service/room/room.service';
+import { ConnectedUserService } from './service/connected-user/connected-user.service';
+import { RoomService } from './service/room-service/room.service';
 
 @Module({
-  imports: [AuthModule, UserModule, TypeOrmModule.forFeature([RoomEntity])],
-  providers: [ChatGateway, RoomService],
+  imports: [
+    AuthModule,
+    UserModule,
+    TypeOrmModule.forFeature([RoomEntity, ConnectedUserEntity]),
+  ],
+  providers: [ChatGateway, RoomService, ConnectedUserService],
   exports: [RoomService],
 })
 export class ChatModule {}
