@@ -72,12 +72,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     page.limit = page.limit > 100 ? 100 : page.limit;
     //this is for angualr-material paginator
     page.page = page.page + 1;
-    const rooms = await this.roomService.getRoomsForUser(
-      socket.data.user.id,
-      page,
-    );
-    //this is for angualr-material paginator
-    rooms.meta.currentPage = rooms.meta.currentPage - 1;
-    return this.server.to(socket.id).emit('rooms', rooms);
+    // console.log(socket.data);
+    if (socket.data.user !== undefined) {
+      const rooms = await this.roomService.getRoomsForUser(
+        socket.data.user.id,
+        page,
+      );
+      //this is for angualr-material paginator
+      rooms.meta.currentPage = rooms.meta.currentPage - 1;
+      return this.server.to(socket.id).emit('rooms', rooms);
+    }
   }
 }
