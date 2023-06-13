@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import {
   WebSocketGateway,
   OnGatewayConnection,
@@ -21,7 +21,9 @@ import { UserService } from 'src/user/services/user-service/user.service';
     origin: ['https://hoppscotch.io', 'http://localhost:4200'],
   },
 })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class ChatGateway
+  implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
+{
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -57,6 +59,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } catch {
       return this.disconnect(socket);
     }
+  }
+
+  async onModuleInit() {
+    await this.connectedUserService.deleteAll();
   }
 
   private disconnect(socket: Socket) {

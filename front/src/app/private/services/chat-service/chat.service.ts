@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { RoomI, RoomPaginateI } from 'src/app/models/room.interface';
-import { UserI } from 'src/app/models/user.interface';
 import { CustomSocket } from '../../sokets/custom-socket';
 
 @Injectable({

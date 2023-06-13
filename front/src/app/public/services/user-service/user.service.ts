@@ -16,8 +16,8 @@ export class UserService {
     );
   }
 
-  getUsers() {
-    return this.http.get('back/users');
+  getUsers(): Observable<UserI[]> {
+    return this.http.get<UserI[]>('back/users');
   }
 
   createUser(user: UserI): Observable<UserI> {
