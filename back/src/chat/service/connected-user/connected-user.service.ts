@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ConnectedUserEntity } from 'src/chat/models/connected-user.entity';
-import { ConnectionUserI } from 'src/chat/models/connected-user.interface';
+import { ConnectedUserEntity } from 'src/chat/models/connected-user/connected-user.entity';
+import { ConnectionUserI } from 'src/chat/models/connected-user/connected-user.interface';
 import { UserI } from 'src/user/model/user.interface';
 import { Repository } from 'typeorm';
 

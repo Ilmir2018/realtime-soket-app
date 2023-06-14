@@ -1,5 +1,7 @@
-import { ConnectedUserEntity } from 'src/chat/models/connected-user.entity';
-import { RoomEntity } from 'src/chat/models/room.entity';
+import { ConnectedUserEntity } from 'src/chat/models/connected-user/connected-user.entity';
+import { JoinedRoomEntity } from 'src/chat/models/joined-room/joined-room.entity';
+import { MessageEntity } from 'src/chat/models/message/message.entity';
+import { RoomEntity } from 'src/chat/models/room/room.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -29,6 +31,12 @@ export class UserEntity {
 
   @OneToMany(() => ConnectedUserEntity, (connection) => connection.user)
   connections: ConnectedUserEntity[];
+
+  @OneToMany(() => JoinedRoomEntity, (joinedRoom) => joinedRoom.room)
+  joinedRooms: JoinedRoomEntity[];
+
+  @OneToMany(() => MessageEntity, (message) => message.user)
+  messages: MessageEntity[];
 
   @BeforeInsert()
   @BeforeUpdate()

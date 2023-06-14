@@ -5,8 +5,8 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
-import { RoomEntity } from 'src/chat/models/room.entity';
-import { RoomI } from 'src/chat/models/room.interface';
+import { RoomEntity } from 'src/chat/models/room/room.entity';
+import { RoomI } from 'src/chat/models/room/room.interface';
 import { UserI } from 'src/user/model/user.interface';
 import { Repository } from 'typeorm';
 
@@ -20,6 +20,13 @@ export class RoomService {
   async createRoom(room: RoomI, creator: UserI): Promise<RoomI> {
     const newRoom = await this.addCreatorToRoom(room, creator);
     return this.roomRepository.save(newRoom);
+  }
+
+  async getRoom(roomId: number): Promise<RoomI> {
+    return await this.roomRepository.findOne({
+      where: { id: roomId },
+      relations: ['users'],
+    });
   }
 
   async getRoomsForUser(
