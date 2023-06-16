@@ -37,9 +37,10 @@ export class RoomService {
       .createQueryBuilder('room')
       .leftJoin('room.users', 'users')
       .where('users.id = :userId', { userId })
-      .leftJoinAndSelect('room.users', 'all_users')
-      .orderBy('room.updated_at', 'DESC');
-    return paginate(query, options);
+      .leftJoinAndSelect('room.users', 'user')
+      .orderBy('room.created_at', 'ASC');
+
+    return paginate<RoomI>(query, options);
   }
 
   async addCreatorToRoom(room: RoomI, creator: UserI): Promise<RoomI> {

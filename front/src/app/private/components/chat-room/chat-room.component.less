@@ -1,24 +1,29 @@
-.container {
+h3 {
+  padding: 0px;
+  padding-top: -10px;
+  margin: 0px;
+}
+
+.chatroom {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
 
-  .mat-card {
-    position: fixed;
-    margin: 20px;
+.messages {
+  background-color: lightgray;
+  height: 400px;
+  overflow-y: scroll;
+  scrollbar-color: lightgrey darkgrey;
+  scrollbar-width: thin;
+}
 
-    .rooms {
-      height: 500px;
-      width: 250px;
-      overflow-y: scroll;
-      scrollbar-color: lightgrey darkgrey;
-      scrollbar-width: thin;
-    }
-
-    .chatroom {
-      margin-left: 40px;
-      width: 600px;
-    }
-  }
+.add_message {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
 }
 
 ::-webkit-scrollbar-track {

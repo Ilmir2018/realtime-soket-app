@@ -45,7 +45,6 @@ export class ChatGateway
       const decodedToken = await this.authService.verifyJwt(
         socket.handshake.headers.authorization,
       );
-      // console.log(decodedToken);
       const user: UserI = await this.userService.getOne(decodedToken.user.id);
       if (!user) {
         return this.disconnect(socket);
