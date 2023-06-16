@@ -1,15 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MessageI } from 'src/app/models/message.interface';
+import { UserI } from 'src/app/models/user.interface';
+import { AuthService } from 'src/app/public/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-chat-message',
   templateUrl: './chat-message.component.html',
   styleUrls: ['./chat-message.component.less'],
 })
-export class ChatMessageComponent implements OnInit {
+export class ChatMessageComponent {
   @Input() message: MessageI;
+  user: UserI = this.authService.getLoggedInUser();
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  constructor(private authService: AuthService) {}
 }

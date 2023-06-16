@@ -4,12 +4,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { LoginResponseI } from 'src/app/models/login-response.interface';
 import { UserI } from 'src/app/models/user.interface';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private snackbar: MatSnackBar) {}
+  constructor(
+    private http: HttpClient,
+    private snackbar: MatSnackBar,
+    private jwtService: JwtHelperService
+  ) {}
 
   login(user: UserI): Observable<LoginResponseI> {
     return this.http.post<LoginResponseI>('back/users/login', user).pipe(
@@ -36,5 +41,10 @@ export class AuthService {
         return throwError(e);
       })
     );
+  }
+
+  getLoggedInUser() {
+    const decodedToken = this.jwtService.decodeToken();
+    return decodedToken.user;
   }
 }

@@ -3,7 +3,14 @@
     <div style="display: flex; flex-direction: row">
       <div>
         <div>
-          <h1>My Chatrooms</h1>
+          <span
+            style="display: flex; flex-direction: row; align-items: baseline"
+          >
+            <h1>My Chatrooms</h1>
+            <small style="margin-left: 15px"
+              >Logged in as {{ user.username }}</small
+            >
+          </span>
           <button mat-button [routerLink]="['../create-room']">
             Create new Room
           </button>
