@@ -6,5 +6,7 @@
     <em>{{ message.user.username }}</em>
     <br />
     {{ message.text }}
+    <br />
+    <em>{{ message.created_at | date : "medium" }}</em>
   </p>
 </span>

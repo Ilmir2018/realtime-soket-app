@@ -149,9 +149,12 @@ export class ChatGateway
     });
     const room: RoomI = await this.roomService.getRoom(createdMessage.room.id);
     const joinedUsers: JoinedRoomI[] = await this.joinedRoomService.findByRoom(
-      room,
+      room.id,
     );
-    //TODO: send new message to all joined users of the room (currently online)
+
+    for (const user of joinedUsers) {
+      await this.server.to(user.socketId).emit('messageAdded', createdMessage);
+    }
   }
 
   private handleIncomingPageRequest(page: PageI): PageI {

@@ -12,8 +12,8 @@
       <span *ngFor="let user of chatRoom.users">{{ user.username }}, </span>
     </span>
   </div>
-  <div class="messages">
-    <span *ngFor="let message of (messages$ | async)?.items">
+  <div #message class="messages">
+    <span *ngFor="let message of (messagesPaginate$ | async)?.items">
       <app-chat-message [message]="message"></app-chat-message>
     </span>
   </div>

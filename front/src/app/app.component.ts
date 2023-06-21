@@ -1,13 +1,11 @@
-import { Component } from '@angular/core';
-import { min, Observable } from 'rxjs';
-import * as _ from 'lodash';
-import { reject } from 'lodash';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor() {}
+  ngOnInit(): void {}
 }
